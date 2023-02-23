@@ -5,4 +5,6 @@ public class TraderNotCreatedException  extends RuntimeException{
         super(message);
     }
 
+
+
 }

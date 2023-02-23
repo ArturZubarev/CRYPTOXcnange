@@ -3,6 +3,7 @@ package com.example.cryptoxcnange.controller;
 import com.example.cryptoxcnange.model.role.Trader;
 import com.example.cryptoxcnange.service.TraderService;
 import com.example.cryptoxcnange.util.TraderErrorResponse;
+import com.example.cryptoxcnange.util.TraderNotCreatedException;
 import com.example.cryptoxcnange.util.TraderNotFoundException;
 import jakarta.validation.Valid;
 import lombok.AllArgsConstructor;
@@ -28,7 +29,7 @@ public class TraderController {
         return traderService.getAllTraders();
     }
 
-    @GetMapping("/{id}")
+    @GetMapping("/trader/{id}")
     public Trader getTraderByID(@PathVariable("id") int id){
         return traderService.getTraderByID(id);
 
@@ -41,9 +42,9 @@ public class TraderController {
         return new ResponseEntity<>(errorResponse, HttpStatus.NOT_FOUND);
     }
 
-    @PostMapping
+    @PostMapping("/create")
     public ResponseEntity<HttpStatus> createNewTrader(@RequestBody
-                                                          @Valid Trader trader,
+                                                           Trader trader,
                                                       BindingResult bindingResult){
         if (bindingResult.hasErrors()){
             //todo
@@ -55,9 +56,18 @@ public class TraderController {
                         .append(error.getDefaultMessage())
                         .append(";");
             }
+
+            throw new TraderNotCreatedException("Trader not create");
         }
         traderService.save(trader);
         return ResponseEntity.ok(HttpStatus.OK);
+    }
+
+    @ExceptionHandler
+    public ResponseEntity<TraderErrorResponse> handleException(TraderNotCreatedException e){
+        TraderErrorResponse response = new TraderErrorResponse(e.getMessage(),
+                System.currentTimeMillis());
+        return new ResponseEntity<>(response, HttpStatus.BAD_REQUEST);
     }
 
 }
