@@ -1,12 +1,11 @@
-package com.example.cryptoxcnange.service;
+package com.example.cryptoxcnange.service.traderService;
 
 import com.example.cryptoxcnange.model.role.Trader;
-import com.example.cryptoxcnange.repositroty.traderRepository.TraderRepository;
+import com.example.cryptoxcnange.repositrory.traderRepository.TraderRepository;
 import com.example.cryptoxcnange.util.TraderNotFoundException;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import org.springframework.web.bind.annotation.GetMapping;
 
 import java.util.List;
 import java.util.Optional;

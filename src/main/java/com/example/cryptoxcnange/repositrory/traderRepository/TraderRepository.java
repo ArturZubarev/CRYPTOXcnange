@@ -1,4 +1,4 @@
-package com.example.cryptoxcnange.repositroty.traderRepository;
+package com.example.cryptoxcnange.repositrory.traderRepository;
 
 
 import com.example.cryptoxcnange.model.role.Trader;
