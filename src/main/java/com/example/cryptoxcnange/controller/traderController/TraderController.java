@@ -23,7 +23,7 @@ public class TraderController {
     private final TraderService traderService;
     private final CurrencyService currencyService;
 
-    @GetMapping()
+    @GetMapping
     public List<Trader> getAllTraders() {
         return traderService.getAllTraders();
     }

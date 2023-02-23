@@ -6,6 +6,7 @@ import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Optional;
 
 @Service
 @AllArgsConstructor
@@ -16,6 +17,10 @@ public class CurrencyService {
 
     public List<Currency> getAllCurrencies(){
         return currencyRepository.findAll();
+    }
+
+    public Optional<Currency> getCurrencyBalance(String name){
+        return currencyRepository.findCurrencyByName(name);
     }
 
 }

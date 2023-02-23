@@ -16,7 +16,7 @@ import java.util.Set;
 @Setter
 @EqualsAndHashCode
 
-public class Wallet implements Serializable {
+public class Wallet {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private long id;

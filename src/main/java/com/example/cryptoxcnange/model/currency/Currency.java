@@ -3,7 +3,6 @@ package com.example.cryptoxcnange.model.currency;
 import com.example.cryptoxcnange.model.wallet.Wallet;
 import jakarta.persistence.*;
 import lombok.*;
-import org.springframework.context.annotation.Primary;
 
 import java.io.Serializable;
 
@@ -14,7 +13,7 @@ import java.io.Serializable;
 @Setter
 @Getter
 @EqualsAndHashCode
-public class Currency implements Serializable {
+public class Currency  {
 
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
@@ -22,7 +21,7 @@ public class Currency implements Serializable {
     private long id;
 
     @Column(name = "currency_names")
-    private String currencyName;
+    private String name;
 
     @Column(name = "denominations")
     private final int denomination = 1;
