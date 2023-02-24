@@ -2,6 +2,7 @@ package com.example.cryptoxcnange.controller.traderController;
 
 import com.example.cryptoxcnange.model.currency.Currency;
 import com.example.cryptoxcnange.model.role.Trader;
+import com.example.cryptoxcnange.repositrory.traderRepository.TraderRepository;
 import com.example.cryptoxcnange.service.currencyService.CurrencyService;
 import com.example.cryptoxcnange.service.traderService.TraderService;
 import com.example.cryptoxcnange.util.TraderErrorResponse;
@@ -22,6 +23,7 @@ import java.util.List;
 public class TraderController {
     private final TraderService traderService;
     private final CurrencyService currencyService;
+    private final TraderRepository traderRepository;
 
     @GetMapping
     public List<Trader> getAllTraders() {
@@ -29,7 +31,7 @@ public class TraderController {
     }
 
 
-    @GetMapping("/trader/{id}")
+    @GetMapping("/{id}")
     public Trader getTraderByID(@PathVariable("id") int id) {
         return traderService.getTraderByID(id);
 
@@ -57,8 +59,21 @@ public class TraderController {
         return ResponseEntity.ok(HttpStatus.OK);
     }
 
+    @PatchMapping("/{id}/update")
+    public ResponseEntity<HttpStatus> updateTrader(@RequestBody Trader traderToUpdate, @PathVariable
+    int id) {
+        var trader = traderService.getTraderByID(id);
+        trader.setUserName(traderToUpdate.getUserName());
+        trader.setEmail(traderToUpdate.getEmail());
+        trader.setCurrencyList(traderToUpdate.getCurrencyList());
+        traderRepository.save(trader);
+        return ResponseEntity.ok(HttpStatus.OK);
+
+    }
+
+
     @GetMapping("/curr")
-    public List<Currency> getAllCurrencies(){
+    public List<Currency> getAllCurrencies() {
         return currencyService.getAllCurrencies();
     }
 

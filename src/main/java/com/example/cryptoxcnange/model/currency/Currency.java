@@ -1,6 +1,7 @@
 package com.example.cryptoxcnange.model.currency;
 
-import com.example.cryptoxcnange.model.wallet.Wallet;
+import com.example.cryptoxcnange.model.role.Trader;
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import jakarta.persistence.*;
 import lombok.*;
 
@@ -13,7 +14,7 @@ import java.io.Serializable;
 @Setter
 @Getter
 @EqualsAndHashCode
-public class Currency  {
+public class Currency implements Serializable {
 
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
@@ -33,10 +34,8 @@ public class Currency  {
     private double balance;
 
     @ManyToOne
-    @JoinColumn(name = "wallet_id",referencedColumnName = "id")
-    private Wallet wallet;
-
-
-
+    @JoinColumn(name = "trader_id",referencedColumnName = "id")
+    @JsonBackReference
+    private Trader trader;
 
 }
