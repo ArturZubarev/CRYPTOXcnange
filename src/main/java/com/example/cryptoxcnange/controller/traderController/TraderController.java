@@ -1,10 +1,10 @@
 package com.example.cryptoxcnange.controller.traderController;
 
 import com.example.cryptoxcnange.model.currency.Currency;
-import com.example.cryptoxcnange.model.role.Trader;
-import com.example.cryptoxcnange.repositrory.traderRepository.TraderRepository;
+import com.example.cryptoxcnange.model.user.User;
+import com.example.cryptoxcnange.repositrory.userRepository.TraderRepository;
 import com.example.cryptoxcnange.service.currencyService.CurrencyService;
-import com.example.cryptoxcnange.service.traderService.TraderService;
+import com.example.cryptoxcnange.service.userService.TraderService;
 import com.example.cryptoxcnange.util.TraderErrorResponse;
 import com.example.cryptoxcnange.util.TraderNotCreatedException;
 import com.example.cryptoxcnange.util.TraderNotFoundException;
@@ -26,13 +26,13 @@ public class TraderController {
     private final TraderRepository traderRepository;
 
     @GetMapping
-    public List<Trader> getAllTraders() {
+    public List<User> getAllTraders() {
         return traderService.getAllTraders();
     }
 
 
     @GetMapping("/{id}")
-    public Trader getTraderByID(@PathVariable("id") int id) {
+    public User getTraderByID(@PathVariable("id") int id) {
         return traderService.getTraderByID(id);
 
     }
@@ -40,7 +40,7 @@ public class TraderController {
 
     @PostMapping("/create")
     public ResponseEntity<HttpStatus> createNewTrader(@RequestBody
-                                                      Trader trader,
+                                                          User trader,
                                                       BindingResult bindingResult) {
         if (bindingResult.hasErrors()) {
             //todo
@@ -60,7 +60,7 @@ public class TraderController {
     }
 
     @PatchMapping("/{id}/update")
-    public ResponseEntity<HttpStatus> updateTrader(@RequestBody Trader traderToUpdate, @PathVariable
+    public ResponseEntity<HttpStatus> updateTrader(@RequestBody User traderToUpdate, @PathVariable
     int id) {
         var trader = traderService.getTraderByID(id);
         trader.setUserName(traderToUpdate.getUserName());
