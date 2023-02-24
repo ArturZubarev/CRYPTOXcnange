@@ -8,8 +8,13 @@ import org.springframework.stereotype.Repository;
 import java.util.Optional;
 
 @Repository
-public interface TraderRepository extends JpaRepository<User, Long> {
-    Optional<User> getTraderById(int id);
+public interface UserRepository extends JpaRepository<User, Long> {
+
+    Optional<User> findBySecret(String secret);
+
+    Optional<User> findByEmailAndUserName(String email,String username);
+
+
 
 
 }
