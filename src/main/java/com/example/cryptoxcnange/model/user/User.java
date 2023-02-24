@@ -40,9 +40,7 @@ public class User {
     @CreditCardNumber
     private String CCnumber;
 
-    @OneToMany(mappedBy = "user", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
-    @JsonManagedReference
-    private List<Currency> currencyList;
+
 
     @Column(name = "secret")
     private final String secret = String.valueOf((12 * 252 * Math.random()*31));

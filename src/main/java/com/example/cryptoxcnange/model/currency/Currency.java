@@ -29,12 +29,6 @@ public class Currency implements Serializable {
     @Column(name = "price")
     private double price;
 
-    @Column(name = "balance")
-    private double balance;
 
-    @ManyToOne
-    @JoinColumn(name = "user_id", referencedColumnName = "id")
-    @JsonBackReference
-    private User user;
 
 }

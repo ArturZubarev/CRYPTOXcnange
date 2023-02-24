@@ -47,8 +47,8 @@ public class UserController {
         String email = user.getEmail();
         String userName = user.getUserName();
         Optional<User> userToCheck = userRepository.findByEmailAndUserName(email,userName);
-        if (userToCheck.isPresent()){
-            return "This user was registered";
+        if (userToCheck.isPresent() || ! user.getRole().equals("user")){
+            return "This user was registered or you selected invalid role";
         }
         else userRepository.save(user);
         return user.getSecret();
