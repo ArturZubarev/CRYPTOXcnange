@@ -24,7 +24,7 @@ public class UserService {
         return userRepository.findBySecret(secret);
     }
 
-    public Optional<User> findUserByEmailAndUsername(String email, String userName){
+    public Optional <User> findUserByEmailAndUsername(String email, String userName){
         return userRepository.findByEmailAndUserName(email,userName);
     }
 

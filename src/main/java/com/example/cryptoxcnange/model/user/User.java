@@ -1,6 +1,7 @@
 package com.example.cryptoxcnange.model.user;
 
 import com.example.cryptoxcnange.model.currency.Currency;
+import com.example.cryptoxcnange.util.SecretStringGenerator;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.Email;
@@ -19,6 +20,7 @@ import java.util.List;
 @NoArgsConstructor
 @EqualsAndHashCode
 public class User {
+
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
@@ -43,7 +45,7 @@ public class User {
 
 
     @Column(name = "secret")
-    private final String secret = String.valueOf((12 * 252 * Math.random()*31));
+    private final String secret = SecretStringGenerator.generateRandomString();
 
 
 

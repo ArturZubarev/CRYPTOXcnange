@@ -18,7 +18,7 @@ import java.util.List;
 import java.util.Optional;
 
 @RestController
-@RequestMapping("/trader")
+@RequestMapping("/user")
 @AllArgsConstructor
 public class UserController {
     private final UserService userService;
@@ -42,28 +42,27 @@ public class UserController {
 
 
     @PostMapping("/create")
-    public String createNewTrader(@RequestBody
-                                  User user) {
+    public ResponseEntity<?> createNewTrader(@RequestBody
+                                             User user) {
         String email = user.getEmail();
         String userName = user.getUserName();
+        String role = user.getRole();
         Optional<User> userToCheck = userRepository.findByEmailAndUserName(email, userName);
-        if (userToCheck.isPresent() || !user.getRole().equals("user")) {
-            return "This user was registered or you selected invalid role";
-        } else userRepository.save(user);
-        return user.getSecret();
-    }
-
-    @PostMapping("/create/admin")
-    public String createAdmin(@RequestBody
-                              User user) {
-        String email = user.getEmail();
-        String userName = user.getUserName();
-        Optional<User> userToCheck = userRepository.findByEmailAndUserName(email, userName);
-        if (userToCheck.isPresent()) {
-            return "This user was registered";
+        if (userToCheck.isPresent() || role.equals("admin") ||
+                role == null) {
+            return
+                    ResponseEntity.status(HttpStatus.BAD_REQUEST)
+                            .body(
+                                    "This user was registered or you selected invalid role");
         } else
-            userRepository.save(user);
-        return user.getSecret();
+
+
+            user.setRole("user");
+        userRepository.save(user);
+
+        return
+                ResponseEntity.status(HttpStatus.CREATED)
+                        .body(user.getSecret());
     }
 
 
@@ -72,17 +71,7 @@ public class UserController {
         return currencyService.getAllCurrencies();
     }
 
-    @PatchMapping("/curr/price")
-    public ResponseEntity<?> setCurrencyPrice(@RequestBody  Currency currency, User user) {
-        Currency fromRepo = currencyService.getCurrencyByCurrencyName(currency.getName());
-        double price = currency.getPrice();
-        if (user.getRole().equals("admin")) {
-            fromRepo.setPrice(price);
-            currencyRepository.save(fromRepo);
-        }
-            return ResponseEntity.status(HttpStatus.OK).body("course update successfully");
 
-    }
 }
 
 
