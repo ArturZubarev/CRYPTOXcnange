@@ -28,6 +28,10 @@ public class UserService {
         return userRepository.findByEmailAndUserName(email,userName);
     }
 
+    public User findUserBySecret(String secret){
+        return userRepository.findUserBySecret(secret);
+    };
+
 
     @Transactional
     public void save(User trader){

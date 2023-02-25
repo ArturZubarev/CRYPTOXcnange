@@ -2,6 +2,7 @@ package com.example.cryptoxcnange.controller.traderController;
 
 import com.example.cryptoxcnange.model.currency.Currency;
 import com.example.cryptoxcnange.model.user.User;
+import com.example.cryptoxcnange.repositrory.currencyRepository.CurrencyRepository;
 import com.example.cryptoxcnange.repositrory.userRepository.UserRepository;
 import com.example.cryptoxcnange.service.currencyService.CurrencyService;
 import com.example.cryptoxcnange.service.userService.UserService;
@@ -11,8 +12,6 @@ import com.example.cryptoxcnange.util.TraderNotFoundException;
 import lombok.AllArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.validation.BindingResult;
-import org.springframework.validation.FieldError;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -25,6 +24,7 @@ public class UserController {
     private final UserService userService;
     private final CurrencyService currencyService;
     private final UserRepository userRepository;
+    private final CurrencyRepository currencyRepository;
 
     @GetMapping("/all")
     public List<User> getAllTraders() {
@@ -33,9 +33,9 @@ public class UserController {
 
 
     @GetMapping("/findOne")
-    public Optional<User> getUserBySecret(@RequestBody User userToFind){
+    public Optional<User> getUserBySecret(@RequestBody User userToFind) {
 
-       return userService.getUserBySecretKey(userToFind.getSecret());
+        return userService.getUserBySecretKey(userToFind.getSecret());
 
 
     }
@@ -46,11 +46,23 @@ public class UserController {
                                   User user) {
         String email = user.getEmail();
         String userName = user.getUserName();
-        Optional<User> userToCheck = userRepository.findByEmailAndUserName(email,userName);
-        if (userToCheck.isPresent() || ! user.getRole().equals("user")){
+        Optional<User> userToCheck = userRepository.findByEmailAndUserName(email, userName);
+        if (userToCheck.isPresent() || !user.getRole().equals("user")) {
             return "This user was registered or you selected invalid role";
-        }
-        else userRepository.save(user);
+        } else userRepository.save(user);
+        return user.getSecret();
+    }
+
+    @PostMapping("/create/admin")
+    public String createAdmin(@RequestBody
+                              User user) {
+        String email = user.getEmail();
+        String userName = user.getUserName();
+        Optional<User> userToCheck = userRepository.findByEmailAndUserName(email, userName);
+        if (userToCheck.isPresent()) {
+            return "This user was registered";
+        } else
+            userRepository.save(user);
         return user.getSecret();
     }
 
@@ -60,6 +72,20 @@ public class UserController {
         return currencyService.getAllCurrencies();
     }
 
+    @PatchMapping("/curr/price")
+    public ResponseEntity<?> setCurrencyPrice(@RequestBody  Currency currency, User user) {
+        Currency fromRepo = currencyService.getCurrencyByCurrencyName(currency.getName());
+        double price = currency.getPrice();
+        if (user.getRole().equals("admin")) {
+            fromRepo.setPrice(price);
+            currencyRepository.save(fromRepo);
+        }
+            return ResponseEntity.status(HttpStatus.OK).body("course update successfully");
 
-
+    }
 }
+
+
+
+
+

@@ -51,11 +51,6 @@
             <artifactId>hibernate-core</artifactId>
             <version>6.1.7.Final</version>
         </dependency>
-		<dependency>
-			<groupId>com.example</groupId>
-			<artifactId>CRYPTOXcnange</artifactId>
-			<version>0.0.1-SNAPSHOT</version>
-		</dependency>
 	</dependencies>
 
 	<build>

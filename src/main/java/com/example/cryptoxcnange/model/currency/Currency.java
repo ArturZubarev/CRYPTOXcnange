@@ -15,6 +15,7 @@ import java.io.Serializable;
 @Getter
 @EqualsAndHashCode
 public class Currency implements Serializable {
+
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     @Column(name = "currency_id")
@@ -28,6 +29,9 @@ public class Currency implements Serializable {
 
     @Column(name = "price")
     private double price;
+
+    @Column(name = "base_currency")
+    private static Currency base_currency_USD = new Currency(1,"USD",1.0);
 
 
 

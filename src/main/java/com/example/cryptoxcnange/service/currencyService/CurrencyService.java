@@ -15,12 +15,23 @@ public class CurrencyService {
 
     private final CurrencyRepository currencyRepository;
 
-    public List<Currency> getAllCurrencies(){
+    public List<Currency> getAllCurrencies() {
         return currencyRepository.findAll();
     }
 
-    public Optional<Currency> getCurrencyBalance(String name){
+    public Currency getCurrencyBalance(String name) {
         return currencyRepository.findCurrencyByName(name);
     }
 
+    public Currency setCurrencyPrice(Currency incomingCurrency) {
+        var currencyFromRepo = currencyRepository.findCurrencyByName(incomingCurrency.getName());
+        currencyFromRepo.setPrice(incomingCurrency.getPrice());
+        currencyRepository.save(currencyFromRepo);
+        return currencyFromRepo;
+    }
+
+    public Currency getCurrencyByCurrencyName(String currencyName) {
+        return currencyRepository.findCurrencyByName(currencyName);
+    }
 }
+
