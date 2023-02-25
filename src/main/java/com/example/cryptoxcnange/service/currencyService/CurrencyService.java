@@ -19,18 +19,10 @@ public class CurrencyService {
         return currencyRepository.findAll();
     }
 
-    public Currency getCurrencyBalance(String name) {
-        return currencyRepository.findCurrencyByName(name);
-    }
 
-    public Currency setCurrencyPrice(Currency incomingCurrency) {
-        var currencyFromRepo = currencyRepository.findCurrencyByName(incomingCurrency.getName());
-        currencyFromRepo.setPrice(incomingCurrency.getPrice());
-        currencyRepository.save(currencyFromRepo);
-        return currencyFromRepo;
-    }
 
-    public Currency getCurrencyByCurrencyName(String currencyName) {
+
+    public Optional<Currency>getCurrencyByCurrencyName(String currencyName) {
         return currencyRepository.findCurrencyByName(currencyName);
     }
 }

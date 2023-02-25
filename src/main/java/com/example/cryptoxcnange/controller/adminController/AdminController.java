@@ -6,6 +6,7 @@ import com.example.cryptoxcnange.repositrory.currencyRepository.CurrencyReposito
 import com.example.cryptoxcnange.repositrory.userRepository.UserRepository;
 import com.example.cryptoxcnange.service.currencyService.CurrencyService;
 import com.example.cryptoxcnange.service.userService.UserService;
+import exchangeTransactions.PriceSetter;
 import lombok.AllArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -22,14 +23,14 @@ public class AdminController {
     private final CurrencyService currencyService;
     private final UserRepository userRepository;
     private final CurrencyRepository currencyRepository;
+    private final PriceSetter priceSetter;
 
     @PostMapping("/new")
     public ResponseEntity<?> createNewAdmin(@RequestBody User incomeUser) {
         Optional<User> adminToCheck = userService.getUserBySecretKey(incomeUser.getSecret());
-        if (adminToCheck.isPresent()){
+        if (adminToCheck.isPresent()) {
             return ResponseEntity.status(HttpStatus.FORBIDDEN).body("this admin was registered");
-        }
-        else {
+        } else {
             incomeUser.setEmail(incomeUser.getEmail());
             incomeUser.setUserName(incomeUser.getUserName());
             incomeUser.setRole("admin");
@@ -39,15 +40,14 @@ public class AdminController {
     }
 
     @PatchMapping("/curr/price")
-    public ResponseEntity<?> setCurrencyPrice(@RequestBody Currency currency, User incomingUser) {
-        Currency fromRepo = currencyService.getCurrencyByCurrencyName(currency.getName());
-        double price = currency.getPrice();
-        String secret = incomingUser.getSecret();
-        System.out.println(secret);
-        User adminToCheck = userRepository.findUserBySecret(secret);
-        if (adminToCheck.getRole().equals("admin")) {
-            fromRepo.setPrice(price);
-            currencyRepository.save(fromRepo);
+    public ResponseEntity<?> setCurrencyPrice(@RequestParam User user, @RequestBody Currency currency) {
+        String userName = user.getUserName();
+        String secret = user.getSecret();
+        System.out.println(userName + " " + secret);
+        Optional<User> adminToCheck = userService.getUserBySecretKey(user.getSecret());
+
+        if (adminToCheck.isPresent()) {
+            priceSetter.SetCurrencyPrice(currency);
             return ResponseEntity.status(HttpStatus.OK).body("course successfully updated!");
         } else {
             return ResponseEntity.status(HttpStatus.FORBIDDEN).body("forbidden");

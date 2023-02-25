@@ -6,9 +6,6 @@ import com.example.cryptoxcnange.repositrory.currencyRepository.CurrencyReposito
 import com.example.cryptoxcnange.repositrory.userRepository.UserRepository;
 import com.example.cryptoxcnange.service.currencyService.CurrencyService;
 import com.example.cryptoxcnange.service.userService.UserService;
-import com.example.cryptoxcnange.util.TraderErrorResponse;
-import com.example.cryptoxcnange.util.TraderNotCreatedException;
-import com.example.cryptoxcnange.util.TraderNotFoundException;
 import lombok.AllArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -48,8 +45,7 @@ public class UserController {
         String userName = user.getUserName();
         String role = user.getRole();
         Optional<User> userToCheck = userRepository.findByEmailAndUserName(email, userName);
-        if (userToCheck.isPresent() || role.equals("admin") ||
-                role == null) {
+        if (userToCheck.isPresent() || ! role.equals("user")) {
             return
                     ResponseEntity.status(HttpStatus.BAD_REQUEST)
                             .body(
