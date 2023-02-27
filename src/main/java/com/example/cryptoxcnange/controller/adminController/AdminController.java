@@ -41,6 +41,16 @@ public class AdminController {
 
     @PutMapping("/curr/price")
     public ResponseEntity<?> setCurrencyPrice(@RequestParam String user, @RequestBody Currency currency) {
+        String secret = user;
+        Optional<User> adminToCheck = userService.getUserBySecretKey(secret);
 
+        if (adminToCheck.isPresent()) {
+            priceSetter.SetCurrencyPrice(currency);
+            return ResponseEntity.status(HttpStatus.OK).body("course successfully updated!");
+        } else {
+            return ResponseEntity.status(HttpStatus.FORBIDDEN).body("forbidden");
+
+
+        }
     }
 }

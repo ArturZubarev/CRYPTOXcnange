@@ -10,6 +10,7 @@ import jakarta.validation.constraints.Size;
 import lombok.*;
 import org.hibernate.validator.constraints.CreditCardNumber;
 
+import java.time.LocalDateTime;
 import java.util.List;
 
 @Entity
@@ -46,6 +47,9 @@ public class User {
 
     @Column(name = "secret")
     private final String secret = SecretStringGenerator.generateRandomString();
+
+    @Column(name = "created_at")
+    private final LocalDateTime created_at = LocalDateTime.now();
 
 
 
