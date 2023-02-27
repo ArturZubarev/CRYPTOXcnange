@@ -39,20 +39,8 @@ public class AdminController {
         return ResponseEntity.status(HttpStatus.OK).body("admin created " + incomeUser.getSecret());
     }
 
-    @PatchMapping("/curr/price")
-    public ResponseEntity<?> setCurrencyPrice(@RequestParam User user, @RequestBody Currency currency) {
-        String userName = user.getUserName();
-        String secret = user.getSecret();
-        System.out.println(userName + " " + secret);
-        Optional<User> adminToCheck = userService.getUserBySecretKey(user.getSecret());
+    @PutMapping("/curr/price")
+    public ResponseEntity<?> setCurrencyPrice(@RequestParam String user, @RequestBody Currency currency) {
 
-        if (adminToCheck.isPresent()) {
-            priceSetter.SetCurrencyPrice(currency);
-            return ResponseEntity.status(HttpStatus.OK).body("course successfully updated!");
-        } else {
-            return ResponseEntity.status(HttpStatus.FORBIDDEN).body("forbidden");
-
-
-        }
     }
 }

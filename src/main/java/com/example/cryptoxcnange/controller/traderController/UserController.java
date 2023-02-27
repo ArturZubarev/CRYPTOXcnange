@@ -29,7 +29,7 @@ public class UserController {
     }
 
 
-    @GetMapping("/findOne")
+    @GetMapping("/one")
     public Optional<User> getUserBySecret(@RequestBody User userToFind) {
 
         return userService.getUserBySecretKey(userToFind.getSecret());
