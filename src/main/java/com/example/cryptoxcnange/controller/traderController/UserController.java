@@ -13,6 +13,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
@@ -24,12 +25,19 @@ public class UserController {
     private final CurrencyService currencyService;
     private final UserRepository userRepository;
     private final CurrencyRepository currencyRepository;
-//    private final UserDTO userDTO;
+    //    private final UserDTO userDTO;
     private final DTOUserConverter dtoUserConverter;
 
     @GetMapping("/all")
-    public List<User> getAllTraders() {
-        return userService.getUsers();
+    public List<UserDTO> getAllUsers() {
+        List<User> userFromRepoList = userService.getUsers();
+        List<UserDTO> outputDTOList = new ArrayList<>();
+        for (User user :
+                userFromRepoList) {
+            UserDTO outputDTO = dtoUserConverter.convertUserToDTO(user);
+            outputDTOList.add(outputDTO);
+        }
+        return outputDTOList;
     }
 
 
@@ -42,7 +50,7 @@ public class UserController {
     }
 
 
-    @PostMapping("/create")
+    @PostMapping("/creating")
     public ResponseEntity<?> createNewTrader(@RequestBody
                                              UserDTO userDTO) {
         String email = userDTO.getEmail();
@@ -51,14 +59,14 @@ public class UserController {
         User userFromDTO = dtoUserConverter.convertDTOToUser(userDTO);
 
         Optional<User> userToCheck = userRepository.findByEmailAndUserName(email, userName);
-        if (userToCheck.isPresent() || ! role.equals("user")) {
+        if (userToCheck.isPresent() || !role.equals("user")) {
             return
                     ResponseEntity.status(HttpStatus.BAD_REQUEST)
                             .body(
                                     "This user was registered or you selected invalid role");
         } else
 
-        userRepository.save(userFromDTO);
+            userRepository.save(userFromDTO);
 
         return
                 ResponseEntity.status(HttpStatus.CREATED)

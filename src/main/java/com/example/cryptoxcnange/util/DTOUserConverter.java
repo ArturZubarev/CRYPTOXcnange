@@ -13,4 +13,13 @@ public class DTOUserConverter {
         return user;
     }
 
+    public UserDTO convertUserToDTO(User user){
+        UserDTO outputDTO = new UserDTO();
+        outputDTO.setEmail(user.getEmail());
+        outputDTO.setUserName(user.getUserName());
+        outputDTO.setRole(user.getRole());
+        return outputDTO;
+
+    }
+
 }
