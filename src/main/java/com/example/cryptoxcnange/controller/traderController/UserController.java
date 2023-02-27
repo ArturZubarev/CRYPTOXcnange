@@ -25,7 +25,7 @@ public class UserController {
     private final CurrencyService currencyService;
     private final UserRepository userRepository;
     private final CurrencyRepository currencyRepository;
-    //    private final UserDTO userDTO;
+
     private final DTOUserConverter dtoUserConverter;
 
     @GetMapping("/all")

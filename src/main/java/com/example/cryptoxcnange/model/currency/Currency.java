@@ -1,11 +1,11 @@
 package com.example.cryptoxcnange.model.currency;
 
-import com.example.cryptoxcnange.model.user.User;
-import com.fasterxml.jackson.annotation.JsonBackReference;
+
 import jakarta.persistence.*;
 import lombok.*;
 
 import java.io.Serializable;
+import java.math.BigDecimal;
 
 @Entity
 @Table(name = "currencies")
@@ -28,10 +28,10 @@ public class Currency implements Serializable {
     private final int denomination = 1;
 
     @Column(name = "price")
-    private double price;
+    private BigDecimal price;
 
     @Column(name = "base_currency")
-    private static Currency base_currency_USD = new Currency(1,"USD",1.0);
+    private static Currency base_currency_USD = new Currency(1,"USD",new BigDecimal(1.0));
 
 
 

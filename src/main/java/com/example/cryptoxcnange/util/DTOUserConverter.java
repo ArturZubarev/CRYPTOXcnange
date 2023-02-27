@@ -10,6 +10,7 @@ public class DTOUserConverter {
         user.setEmail(dto.getEmail());
         user.setUserName(dto.getUserName());
         user.setRole("user");
+        user.setSecret(SecretStringGenerator.generateRandomString());
         return user;
     }
 

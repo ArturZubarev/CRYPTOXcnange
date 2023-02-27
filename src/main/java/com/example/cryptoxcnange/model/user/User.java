@@ -46,7 +46,7 @@ public class User {
 
 
     @Column(name = "secret")
-    private final String secret = SecretStringGenerator.generateRandomString();
+    private String secret;
 
     @Column(name = "created_at")
     private final LocalDateTime created_at = LocalDateTime.now();

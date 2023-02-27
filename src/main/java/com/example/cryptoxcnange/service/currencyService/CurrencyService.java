@@ -22,8 +22,12 @@ public class CurrencyService {
 
 
 
-    public Optional<Currency>getCurrencyByCurrencyName(String currencyName) {
+    public Currency getCurrencyByName(String currencyName) {
         return currencyRepository.findCurrencyByName(currencyName);
+    }
+
+    public void save(Currency currency){
+        currencyRepository.save(currency);
     }
 }
 

@@ -9,7 +9,7 @@ import java.util.Optional;
 @Repository
 public interface CurrencyRepository extends JpaRepository<Currency,Long> {
 
-    public Optional<Currency> findCurrencyByName(String name);
+    public Currency findCurrencyByName(String name);
 
 
 
