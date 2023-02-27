@@ -1,7 +1,8 @@
-package com.example.cryptoxcnange.util;
+package com.example.cryptoxcnange.dto.user;
 
-import com.example.cryptoxcnange.dto.UserDTO;
+import com.example.cryptoxcnange.dto.user.UserDTO;
 import com.example.cryptoxcnange.model.user.User;
+import com.example.cryptoxcnange.util.SecretStringGenerator;
 import lombok.NoArgsConstructor;
 @NoArgsConstructor
 public class DTOUserConverter {

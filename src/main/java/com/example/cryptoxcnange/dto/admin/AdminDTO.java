@@ -1,4 +1,4 @@
-package com.example.cryptoxcnange.dto;
+package com.example.cryptoxcnange.dto.admin;
 
 import com.example.cryptoxcnange.model.currency.Currency;
 import lombok.Getter;
@@ -13,5 +13,5 @@ import java.math.BigDecimal;
 public class AdminDTO {
     private String secret;
     private String currency_name;
-    private BigDecimal currency_price;
+    private String currency_price;
 }

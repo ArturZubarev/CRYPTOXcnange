@@ -1,8 +1,9 @@
 package com.example.cryptoxcnange.controller.adminController;
 
 import com.example.cryptoxcnange.business.PriceSetter;
-import com.example.cryptoxcnange.dto.AdminDTO;
-import com.example.cryptoxcnange.model.currency.Currency;
+import com.example.cryptoxcnange.dto.admin.AdminDTO;
+import com.example.cryptoxcnange.dto.user.DTOUserConverter;
+import com.example.cryptoxcnange.dto.user.UserDTO;
 import com.example.cryptoxcnange.model.user.User;
 import com.example.cryptoxcnange.repositrory.currencyRepository.CurrencyRepository;
 import com.example.cryptoxcnange.repositrory.userRepository.UserRepository;
@@ -13,6 +14,8 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Optional;
 
 @RestController
@@ -25,6 +28,19 @@ public class AdminController {
     private final UserRepository userRepository;
     private final CurrencyRepository currencyRepository;
     private final PriceSetter priceSetter;
+    private final DTOUserConverter dtoUserConverter;
+
+    @GetMapping("/all")
+    public List<UserDTO> getAllUsers() {
+        List<User> userFromRepoList = userService.getUsers();
+        List<UserDTO> outputDTOList = new ArrayList<>();
+        for (User user :
+                userFromRepoList) {
+            UserDTO outputDTO = dtoUserConverter.convertUserToDTO(user);
+            outputDTOList.add(outputDTO);
+        }
+        return outputDTOList;
+    }
 
     @PostMapping("/new")
     public ResponseEntity<?> createNewAdmin(@RequestBody User incomeUser) {
@@ -40,13 +56,13 @@ public class AdminController {
         return ResponseEntity.status(HttpStatus.OK).body("admin created " + incomeUser.getSecret());
     }
 
-    @PutMapping("/curr/price")
+    @PatchMapping("/curr/price")
     public ResponseEntity<?> setCurrencyPrice(@RequestBody AdminDTO adminDTO) {
-        System.out.println(adminDTO.getSecret());
         priceSetter.setCurrencyPrice(adminDTO);
-        return ResponseEntity.status(HttpStatus.OK).body("ok");
+        return ResponseEntity.status(HttpStatus.OK).body("Price " + adminDTO.getCurrency_name()
+                + " " + "updated!");
 
-
-
-        }
     }
+
+
+}

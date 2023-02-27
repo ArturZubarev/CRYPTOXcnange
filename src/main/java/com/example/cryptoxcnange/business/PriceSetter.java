@@ -1,20 +1,18 @@
 package com.example.cryptoxcnange.business;
 
-import com.example.cryptoxcnange.dto.AdminDTO;
+import com.example.cryptoxcnange.dto.admin.AdminDTO;
 import com.example.cryptoxcnange.model.currency.Currency;
 import com.example.cryptoxcnange.model.user.User;
 import com.example.cryptoxcnange.service.currencyService.CurrencyService;
 import com.example.cryptoxcnange.service.userService.UserService;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
-import lombok.NoArgsConstructor;
 import lombok.Setter;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
-import java.math.BigDecimal;
-import java.util.Optional;
+
 
 @AllArgsConstructor
 @Getter
@@ -26,8 +24,6 @@ public class PriceSetter {
     @Autowired
     private final CurrencyService currencyService;
 
-
-
     public void setCurrencyPrice(AdminDTO adminDTO) {
         ModelMapper modelMapper = new ModelMapper();
 
@@ -35,18 +31,18 @@ public class PriceSetter {
         User adminToCheck = modelMapper.map(adminDTO, User.class);
 
         String secret = adminToCheck.getSecret();
-        System.out.println(secret);
 
         User adminFromRepository = userService.findUserBySecret(secret);
-        System.out.println(adminFromRepository.getSecret());
-        System.out.println(adminFromRepository.getRole());
+
 
         String incomingCurrencyName = adminDTO.getCurrency_name();
-        BigDecimal incomingCurrencyPrice = adminDTO.getCurrency_price();
+        Double incomingCurrencyPrice = Double.valueOf(adminDTO.getCurrency_price());
 
         Currency currencyFromRepository =
                 currencyService.getCurrencyByName(incomingCurrencyName);
         String currencyFromRepositoryName = currencyFromRepository.getName();
+
+
         if (currencyFromRepositoryName.equals(incomingCurrencyName) &&
                 adminFromRepository.getRole().equals("admin")) {
             currencyFromRepository.setPrice(incomingCurrencyPrice);

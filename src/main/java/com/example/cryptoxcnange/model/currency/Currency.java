@@ -3,6 +3,7 @@ package com.example.cryptoxcnange.model.currency;
 
 import jakarta.persistence.*;
 import lombok.*;
+import org.springframework.stereotype.Component;
 
 import java.io.Serializable;
 import java.math.BigDecimal;
@@ -14,6 +15,7 @@ import java.math.BigDecimal;
 @Setter
 @Getter
 @EqualsAndHashCode
+@Component
 public class Currency implements Serializable {
 
     @Id
@@ -28,10 +30,10 @@ public class Currency implements Serializable {
     private final int denomination = 1;
 
     @Column(name = "price")
-    private BigDecimal price;
+    private Double price;
 
     @Column(name = "base_currency")
-    private static Currency base_currency_USD = new Currency(1,"USD",new BigDecimal(1.0));
+    private static Currency base_currency_USD = new Currency(1,"USD",1.00);
 
 
 

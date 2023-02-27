@@ -1,6 +1,7 @@
 package com.example.cryptoxcnange.model.user;
 
 import com.example.cryptoxcnange.model.currency.Currency;
+import com.example.cryptoxcnange.model.wallet.Wallet;
 import com.example.cryptoxcnange.util.SecretStringGenerator;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.*;
@@ -50,6 +51,13 @@ public class User {
 
     @Column(name = "created_at")
     private final LocalDateTime created_at = LocalDateTime.now();
+
+
+    @OneToOne(cascade = CascadeType.ALL)
+    @JoinColumn(name = "wallet_id")
+    private Wallet wallet;
+
+
 
 
 

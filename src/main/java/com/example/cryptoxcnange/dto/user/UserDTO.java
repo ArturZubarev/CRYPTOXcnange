@@ -1,4 +1,4 @@
-package com.example.cryptoxcnange.dto;
+package com.example.cryptoxcnange.dto.user;
 
 import lombok.Getter;
 import lombok.Setter;

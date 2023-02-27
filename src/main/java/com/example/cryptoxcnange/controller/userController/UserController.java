@@ -1,21 +1,23 @@
-package com.example.cryptoxcnange.controller.traderController;
+package com.example.cryptoxcnange.controller.userController;
 
-import com.example.cryptoxcnange.dto.UserDTO;
+import com.example.cryptoxcnange.business.ExchangeRate;
+import com.example.cryptoxcnange.dto.currency.CurrencyDTO;
+import com.example.cryptoxcnange.dto.currency.DTOCurrencyConverter;
+import com.example.cryptoxcnange.dto.user.UserDTO;
 import com.example.cryptoxcnange.model.currency.Currency;
 import com.example.cryptoxcnange.model.user.User;
 import com.example.cryptoxcnange.repositrory.currencyRepository.CurrencyRepository;
 import com.example.cryptoxcnange.repositrory.userRepository.UserRepository;
 import com.example.cryptoxcnange.service.currencyService.CurrencyService;
 import com.example.cryptoxcnange.service.userService.UserService;
-import com.example.cryptoxcnange.util.DTOUserConverter;
+import com.example.cryptoxcnange.dto.user.DTOUserConverter;
 import lombok.AllArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Optional;
+import java.math.BigDecimal;
+import java.util.*;
 
 @RestController
 @RequestMapping("/user")
@@ -25,28 +27,17 @@ public class UserController {
     private final CurrencyService currencyService;
     private final UserRepository userRepository;
     private final CurrencyRepository currencyRepository;
+    private final ExchangeRate exchangeRate;
 
     private final DTOUserConverter dtoUserConverter;
+    private final DTOCurrencyConverter dtoCurrencyConverter;
 
-    @GetMapping("/all")
-    public List<UserDTO> getAllUsers() {
-        List<User> userFromRepoList = userService.getUsers();
-        List<UserDTO> outputDTOList = new ArrayList<>();
-        for (User user :
-                userFromRepoList) {
-            UserDTO outputDTO = dtoUserConverter.convertUserToDTO(user);
-            outputDTOList.add(outputDTO);
-        }
-        return outputDTOList;
-    }
+
 
 
     @GetMapping("/one")
     public Optional<User> getUserBySecret(@RequestBody User userToFind) {
-
         return userService.getUserBySecretKey(userToFind.getSecret());
-
-
     }
 
 
@@ -77,6 +68,13 @@ public class UserController {
     @GetMapping("/curr")
     public List<Currency> getAllCurrencies() {
         return currencyService.getAllCurrencies();
+    }
+
+    @GetMapping("/rate")
+    public Set<Map.Entry<String, Double>> getRate(@RequestBody CurrencyDTO currencyDTO){
+        Map<String, Double> rateMap =exchangeRate.courseMap(currencyDTO);
+        return rateMap.entrySet();
+
     }
 
 
