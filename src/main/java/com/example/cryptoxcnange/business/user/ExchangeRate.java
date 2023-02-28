@@ -15,7 +15,7 @@ import java.util.Map;
 @Component
 public class ExchangeRate {
     private final CurrencyService currencyService;
-    private final Currency currency;
+
 
 
     public Map<String, Double> courseMap(CurrencyDTO currencyDTO) {

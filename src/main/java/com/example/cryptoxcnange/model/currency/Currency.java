@@ -1,13 +1,9 @@
 package com.example.cryptoxcnange.model.currency;
 
-
-import com.example.cryptoxcnange.model.wallet.Wallet;
 import jakarta.persistence.*;
 import lombok.*;
 import org.springframework.stereotype.Component;
 
-import java.io.Serializable;
-import java.math.BigDecimal;
 
 @Entity
 @Table(name = "currencies")
@@ -32,8 +28,6 @@ public class Currency {
 
     @Column(name = "price")
     private Double price;
-
-
 
 
 }

@@ -1,16 +1,12 @@
 package com.example.cryptoxcnange.model.wallet;
 
-import com.example.cryptoxcnange.model.currency.Currency;
 import com.example.cryptoxcnange.model.user.User;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
-
-import java.math.BigDecimal;
 import java.time.LocalDateTime;
-import java.util.Map;
 
 @Entity
 @AllArgsConstructor

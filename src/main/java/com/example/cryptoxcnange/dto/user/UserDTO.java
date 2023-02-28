@@ -1,6 +1,5 @@
 package com.example.cryptoxcnange.dto.user;
 
-import com.example.cryptoxcnange.model.wallet.Wallet;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.Setter;

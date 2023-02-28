@@ -4,10 +4,9 @@ import com.example.cryptoxcnange.business.admin.PriceSetter;
 import com.example.cryptoxcnange.dto.admin.AdminDTO;
 import com.example.cryptoxcnange.dto.user.DTOUserConverter;
 import com.example.cryptoxcnange.dto.user.UserDTO;
+import com.example.cryptoxcnange.dto.user.UserDTOWithSecretKey;
 import com.example.cryptoxcnange.model.user.User;
-import com.example.cryptoxcnange.repositrory.currencyRepository.CurrencyRepository;
 import com.example.cryptoxcnange.repositrory.userRepository.UserRepository;
-import com.example.cryptoxcnange.service.currencyService.CurrencyService;
 import com.example.cryptoxcnange.service.userService.UserService;
 import com.example.cryptoxcnange.util.SecretStringGenerator;
 import lombok.AllArgsConstructor;
@@ -25,14 +24,12 @@ import java.util.Optional;
 public class AdminController {
 
     private final UserService userService;
-    private final CurrencyService currencyService;
     private final UserRepository userRepository;
-    private final CurrencyRepository currencyRepository;
     private final PriceSetter priceSetter;
     private final DTOUserConverter dtoUserConverter;
 
     @GetMapping("/all")
-    public List<UserDTO> getAllUsers() {
+    public ResponseEntity<?> getAllUsers(@RequestBody UserDTOWithSecretKey incomingUser) {
         List<User> userFromRepoList = userService.getUsers();
         List<UserDTO> outputDTOList = new ArrayList<>();
         for (User user :
@@ -40,12 +37,18 @@ public class AdminController {
             UserDTO outputDTO = dtoUserConverter.convertUserToDTO(user);
             outputDTOList.add(outputDTO);
         }
-        return outputDTOList;
+        User adminToCheck = userService.findUserBySecret(incomingUser.getSecret());
+        if (!adminToCheck.getRole().equals("admin")) {
+
+            return ResponseEntity.status(HttpStatus.FORBIDDEN).body("forbidden");
+        } else
+            return ResponseEntity.status(HttpStatus.OK).body(outputDTOList);
     }
+
 
     @PostMapping("/new")
     public ResponseEntity<?> createNewAdmin(@RequestBody UserDTO userDTO) {
-        Optional<User> userFromRepository = userService.findUserByEmailAndUsername(userDTO.getEmail(),userDTO.getUserName());
+        Optional<User> userFromRepository = userService.findUserByEmailAndUsername(userDTO.getEmail(), userDTO.getUserName());
         User admin = new User();
         if (userFromRepository.isPresent()) {
             return ResponseEntity.status(HttpStatus.FORBIDDEN).body("this admin was registered");
@@ -57,8 +60,10 @@ public class AdminController {
             admin.setSecret(SecretStringGenerator.generateRandomString());
             userRepository.save(admin);
         }
-        return ResponseEntity.status(HttpStatus.OK).body("admin created " + admin.getSecret() );
+
+        return ResponseEntity.status(HttpStatus.OK).body("admin created " + admin.getSecret());
     }
+
 
     @PatchMapping("/curr/price")
     public ResponseEntity<?> setCurrencyPrice(@RequestBody AdminDTO adminDTO) {

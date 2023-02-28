@@ -10,9 +10,7 @@ import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.Size;
 import lombok.*;
 import org.hibernate.validator.constraints.CreditCardNumber;
-
 import java.time.LocalDateTime;
-import java.util.List;
 import java.util.Set;
 
 @Entity
@@ -33,7 +31,7 @@ public class User {
     @NotBlank
     private String email;
 
-    @Column(name = "users_names", nullable = false,unique = true)
+    @Column(name = "users_names", nullable = false, unique = true)
     @Size(min = 3)
     @NotBlank
     private String userName;
@@ -46,7 +44,6 @@ public class User {
     private String CCnumber;
 
 
-
     @Column(name = "secret")
     private String secret;
 
@@ -54,15 +51,11 @@ public class User {
     private final LocalDateTime created_at = LocalDateTime.now();
 
 
-
     @OneToMany(mappedBy = "walletOwner")
     private Set<Wallet> wallets;
 
     @Column(name = "wallet_id")
     private Long walletId;
-
-
-
 
 
 }
