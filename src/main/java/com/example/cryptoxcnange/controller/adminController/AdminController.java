@@ -1,6 +1,6 @@
 package com.example.cryptoxcnange.controller.adminController;
 
-import com.example.cryptoxcnange.business.PriceSetter;
+import com.example.cryptoxcnange.business.admin.PriceSetter;
 import com.example.cryptoxcnange.dto.admin.AdminDTO;
 import com.example.cryptoxcnange.dto.user.DTOUserConverter;
 import com.example.cryptoxcnange.dto.user.UserDTO;
@@ -9,6 +9,7 @@ import com.example.cryptoxcnange.repositrory.currencyRepository.CurrencyReposito
 import com.example.cryptoxcnange.repositrory.userRepository.UserRepository;
 import com.example.cryptoxcnange.service.currencyService.CurrencyService;
 import com.example.cryptoxcnange.service.userService.UserService;
+import com.example.cryptoxcnange.util.SecretStringGenerator;
 import lombok.AllArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -43,17 +44,20 @@ public class AdminController {
     }
 
     @PostMapping("/new")
-    public ResponseEntity<?> createNewAdmin(@RequestBody User incomeUser) {
-        Optional<User> adminToCheck = userService.getUserBySecretKey(incomeUser.getSecret());
-        if (adminToCheck.isPresent()) {
+    public ResponseEntity<?> createNewAdmin(@RequestBody UserDTO userDTO) {
+        Optional<User> userFromRepository = userService.findUserByEmailAndUsername(userDTO.getEmail(),userDTO.getUserName());
+        User admin = new User();
+        if (userFromRepository.isPresent()) {
             return ResponseEntity.status(HttpStatus.FORBIDDEN).body("this admin was registered");
         } else {
-            incomeUser.setEmail(incomeUser.getEmail());
-            incomeUser.setUserName(incomeUser.getUserName());
-            incomeUser.setRole("admin");
-            userRepository.save(incomeUser);
+
+            admin.setEmail(userDTO.getEmail());
+            admin.setUserName(userDTO.getUserName());
+            admin.setRole("admin");
+            admin.setSecret(SecretStringGenerator.generateRandomString());
+            userRepository.save(admin);
         }
-        return ResponseEntity.status(HttpStatus.OK).body("admin created " + incomeUser.getSecret());
+        return ResponseEntity.status(HttpStatus.OK).body("admin created " + admin.getSecret() );
     }
 
     @PatchMapping("/curr/price")

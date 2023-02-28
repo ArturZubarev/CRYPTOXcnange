@@ -1,22 +1,45 @@
 package com.example.cryptoxcnange.model.wallet;
 
+import com.example.cryptoxcnange.model.currency.Currency;
 import com.example.cryptoxcnange.model.user.User;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
+import lombok.Getter;
 import lombok.NoArgsConstructor;
+import lombok.Setter;
+
+import java.math.BigDecimal;
+import java.time.LocalDateTime;
+import java.util.Map;
 
 @Entity
 @AllArgsConstructor
 @NoArgsConstructor
 @Table
+@Getter
+@Setter
+
 public class Wallet {
     @Id
     @Column(name = "wallet_id")
     @GeneratedValue(strategy = GenerationType.AUTO)
     private long id;
 
+    @Column(name = "currencyName")
+    private String currencyName;
 
-    @OneToOne(mappedBy = "wallet")
+    @Column(name = "balance")
+    private Double balance;
 
-    private User user;
+    @Column(name = "createdAt")
+    private LocalDateTime created_at;
+
+    @Column(name = "total_cost")
+    private Double totalCost;
+
+    @ManyToOne
+    @JoinColumn(name = "user_id",referencedColumnName = "id")
+    private User walletOwner;
+
+
 }

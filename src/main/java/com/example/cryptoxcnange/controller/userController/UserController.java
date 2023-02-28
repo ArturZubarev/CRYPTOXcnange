@@ -1,9 +1,11 @@
 package com.example.cryptoxcnange.controller.userController;
 
-import com.example.cryptoxcnange.business.ExchangeRate;
+import com.example.cryptoxcnange.business.user.ExchangeRate;
+import com.example.cryptoxcnange.business.user.WalletCreator;
 import com.example.cryptoxcnange.dto.currency.CurrencyDTO;
 import com.example.cryptoxcnange.dto.currency.DTOCurrencyConverter;
 import com.example.cryptoxcnange.dto.user.UserDTO;
+import com.example.cryptoxcnange.dto.user.UserDTOWithSecretKey;
 import com.example.cryptoxcnange.model.currency.Currency;
 import com.example.cryptoxcnange.model.user.User;
 import com.example.cryptoxcnange.repositrory.currencyRepository.CurrencyRepository;
@@ -16,7 +18,6 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-import java.math.BigDecimal;
 import java.util.*;
 
 @RestController
@@ -26,11 +27,10 @@ public class UserController {
     private final UserService userService;
     private final CurrencyService currencyService;
     private final UserRepository userRepository;
-    private final CurrencyRepository currencyRepository;
     private final ExchangeRate exchangeRate;
 
     private final DTOUserConverter dtoUserConverter;
-    private final DTOCurrencyConverter dtoCurrencyConverter;
+    private final WalletCreator walletCreator;
 
 
 
@@ -75,6 +75,12 @@ public class UserController {
         Map<String, Double> rateMap =exchangeRate.courseMap(currencyDTO);
         return rateMap.entrySet();
 
+    }
+
+    @PostMapping("/wallet/new")
+    public ResponseEntity<?> createWallet(@RequestBody UserDTOWithSecretKey userDTO){
+        walletCreator.createWallet(userDTO);
+        return ResponseEntity.status(HttpStatus.OK).body("wallet creatded");
     }
 
 

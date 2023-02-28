@@ -1,4 +1,4 @@
-package com.example.cryptoxcnange.business;
+package com.example.cryptoxcnange.business.admin;
 
 import com.example.cryptoxcnange.dto.admin.AdminDTO;
 import com.example.cryptoxcnange.model.currency.Currency;

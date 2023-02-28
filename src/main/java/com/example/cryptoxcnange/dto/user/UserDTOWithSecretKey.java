@@ -10,17 +10,9 @@ import java.util.Set;
 @Getter
 @Setter
 @EqualsAndHashCode
-
-public class UserDTO {
-    private String email;
-
-    private String userName;
-
-    private String role;
-
-
-
-
-
+public class UserDTOWithSecretKey {
+    private String secret;
+    private String currencyName;
+    private Double balance;
 
 }

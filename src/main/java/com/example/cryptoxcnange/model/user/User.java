@@ -13,6 +13,7 @@ import org.hibernate.validator.constraints.CreditCardNumber;
 
 import java.time.LocalDateTime;
 import java.util.List;
+import java.util.Set;
 
 @Entity
 @Table(name = "users")
@@ -53,9 +54,12 @@ public class User {
     private final LocalDateTime created_at = LocalDateTime.now();
 
 
-    @OneToOne(cascade = CascadeType.ALL)
-    @JoinColumn(name = "wallet_id")
-    private Wallet wallet;
+
+    @OneToMany(mappedBy = "walletOwner")
+    private Set<Wallet> wallets;
+
+    @Column(name = "wallet_id")
+    private Long walletId;
 
 
 
